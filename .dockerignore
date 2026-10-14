@@ -1,0 +1,13 @@
+.git
+.github
+**/.env
+**/.env.*
+**/vendor
+**/node_modules
+**/dist
+backend/laravel
+backend/database/*.sqlite*
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
