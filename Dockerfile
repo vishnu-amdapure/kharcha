@@ -36,7 +36,10 @@ COPY --from=php-dependencies /build/backend/vendor ./vendor
 COPY --from=php-dependencies /build/backend/bootstrap/cache/packages.php ./bootstrap/cache/packages.php
 COPY --from=php-dependencies /build/backend/bootstrap/cache/services.php ./bootstrap/cache/services.php
 COPY --from=frontend-build /build/frontend/dist/ ./public/
+COPY --from=source-code /src/frontend/public/icons/ ./public/icons/
 RUN rm -f bootstrap/cache/config.php \
+    && test -s public/icons/kharcha-192.png \
+    && test -s public/icons/kharcha-512.png \
     && mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
