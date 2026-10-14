@@ -16,7 +16,8 @@ RUN npm run build
 FROM composer:2 AS php-dependencies
 WORKDIR /build/backend
 COPY --from=source-code /src/backend/ ./
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+RUN rm -f bootstrap/cache/packages.php bootstrap/cache/services.php bootstrap/cache/config.php \
+    && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 FROM php:8.4-apache
 RUN apt-get update \
@@ -32,8 +33,11 @@ RUN apt-get update \
 WORKDIR /var/www/html
 COPY --from=source-code /src/backend/ ./
 COPY --from=php-dependencies /build/backend/vendor ./vendor
+COPY --from=php-dependencies /build/backend/bootstrap/cache/packages.php ./bootstrap/cache/packages.php
+COPY --from=php-dependencies /build/backend/bootstrap/cache/services.php ./bootstrap/cache/services.php
 COPY --from=frontend-build /build/frontend/dist/ ./public/
-RUN mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
+RUN rm -f bootstrap/cache/config.php \
+    && mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
 ENV PORT=10000
