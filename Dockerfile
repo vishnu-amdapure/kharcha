@@ -41,7 +41,8 @@ RUN rm -f bootstrap/cache/config.php \
     && test -s public/icons/kharcha-192.png \
     && test -s public/icons/kharcha-512.png \
     && mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+    && chown -R www-data:www-data public storage bootstrap/cache \
+    && chmod -R a+rX public
 
 ENV PORT=10000
 EXPOSE 10000
