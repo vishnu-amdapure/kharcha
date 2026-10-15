@@ -17,7 +17,7 @@ FROM composer:2 AS php-dependencies
 WORKDIR /build/backend
 COPY --from=source-code /src/backend/ ./
 RUN rm -f bootstrap/cache/packages.php bootstrap/cache/services.php bootstrap/cache/config.php \
-    && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+    && composer install --no-dev --no-interaction --prefer-source --optimize-autoloader
 
 FROM php:8.4-apache
 RUN apt-get update \
