@@ -24,6 +24,14 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends libpq-dev libzip-dev \
     && docker-php-ext-install pdo_mysql pdo_pgsql zip opcache \
     && a2enmod rewrite headers \
+    && printf '%s\n' \
+        'Alias /icons/ /var/www/html/public/icons/' \
+        '<Directory /var/www/html/public/icons>' \
+        '    Options FollowSymLinks' \
+        '    Require all granted' \
+        '</Directory>' \
+        > /etc/apache2/conf-available/kharcha-icons.conf \
+    && a2enconf kharcha-icons \
     && sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
     && sed -ri 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf \
     && sed -ri 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf \
