@@ -1,0 +1,6 @@
+[build]
+  command = "unzip -o kharcha-source.zip -d . && npm ci --prefix frontend && npm run build --prefix frontend"
+  publish = "frontend/dist"
+
+[build.environment]
+  VITE_API_URL = "https://kharcha-app-vishnu.onrender.com/api"
